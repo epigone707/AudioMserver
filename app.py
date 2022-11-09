@@ -37,6 +37,7 @@ def index():
 def validate_audio(uploaded_file):
     # TODO
 
+
     return True
 
 
@@ -46,19 +47,6 @@ def validate_audio_fname(filename):
 
 def get_sec(duration):
     """Get seconds from time."""
-    # count = 0
-    # for c in time_str:
-    #     if c == ':':
-    #         count += 1
-    # if count == 2:
-    #     h, m, s = time_str.split(':')
-    #     return int(h) * 3600 + int(m) * 60 + int(s)
-    # elif count == 1:
-    #     m, s = time_str.split(':')
-    #     return int(m) * 60 + int(s)
-    # else:
-    #     print(f"invalid duration string: {time_str}")
-    #     return 0
     return int(duration)
 
 
@@ -143,11 +131,7 @@ def download():
     file_name = args_dict.get("name")
     with open(os.path.join(app.config['UPLOAD_PATH'], file_name), 'rb') as fd:
         contents = fd.read()
-    return jsonify(
-        filename=file_name,
-        found=True,
-        contents=str(contents)
-    )
+    return send_from_directory( app.config['UPLOAD_PATH'], file_name)
 
 
 @app.route('/info', methods=['GET'])
@@ -171,6 +155,9 @@ def meta_info():
 def filtered_list():
     args_dict = request.args.to_dict()
     print(args_dict)
+    # for arg in args_dict:
+    #   maxduration = int(args_dict.get("maxduration")) if "maxduration" in args_dict else float("inf")
+    #   artist = args_dict.get("artist")
 
     if "maxduration" in args_dict:
         maxduration = int(args_dict.get("maxduration"))
