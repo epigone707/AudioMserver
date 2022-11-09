@@ -174,13 +174,41 @@ def filtered_list():
 
     if "maxduration" in args_dict:
         maxduration = int(args_dict.get("maxduration"))
-        print(maxduration)
+        # print(maxduration)
         rows = db.session.execute(db.select(['*']).filter(
             Metadata.duration <= maxduration))
         res = []
         for row in rows:
-            print(row)
-            print(type(row))
+            # print(row)
+            # print(type(row))
+            res.append(dict(row._mapping))
+        return jsonify(
+            found=(len(res) > 0),
+            results=res
+        )
+    elif "artist" in args_dict:
+        artist = args_dict.get("artist")
+        # print(artist)
+        rows = db.session.execute(db.select(['*']).filter(
+            Metadata.artist == artist))
+        res = []
+        for row in rows:
+            # print(row)
+            # print(type(row))
+            res.append(dict(row._mapping))
+        return jsonify(
+            found=(len(res) > 0),
+            results=res
+        )
+    elif "album" in args_dict:
+        album = args_dict.get("album")
+        print(album)
+        rows = db.session.execute(db.select(['*']).filter(
+            Metadata.album == album))
+        res = []
+        for row in rows:
+            # print(row)
+            # print(type(row))
             res.append(dict(row._mapping))
         return jsonify(
             found=(len(res) > 0),
